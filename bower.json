@@ -1,0 +1,24 @@
+{
+  "name": "events-manager",
+  "version": "0.0.0",
+  "homepage": "https://github.com/MauF/events-manager",
+  "description": "webapp for handle the events (firebase + angularjs)",
+  "authors": [
+    "maurizio.fassone"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material": "~0.7.1",
+    "angular-route": "~1.3.13",
+    "angular-mocks": "~1.3.13",
+    "bootstrap-css-only": "~3.3.2"
+  }
+}

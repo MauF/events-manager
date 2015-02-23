@@ -1,0 +1,19 @@
+{
+  "name": "angular-material-test",
+  "version": "0.0.0",
+  "description": "test",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "colors": "^1.0.3",
+    "connect-livereload": "^0.5.0",
+    "express": "^4.10.3",
+    "gulp": "^3.8.10",
+    "gulp-develop-server": "^0.2.5",
+    "gulp-livereload": "^2.1.1",
+    "tiny-lr": "^0.1.4"
+  }
+}

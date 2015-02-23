@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" class="no-js" data-ng-cloak data-ng-controller="AppController as app">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{app.title}}</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="http://www.primeur.com/favicon.ico">
+    <link rel="stylesheet" href="bower-components/bootstrap-css-only/css/bootstrap.css">
+    <link rel="stylesheet" href="bower-components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower-components/Hover/css/hover-min.css">
+    <link rel="stylesheet" href="bower-components/angular-ui-grid/ui-grid.css" />
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body layout="column">
+    <!--     <md-toolbar class="md-primay md-hue-1">
+        <div layout="row" layout-align="end center">
+            <button data-ng-click="app.toggleSidenav('left')" hide-gt-sm class="menuBtn">
+                <span class="visuallyhidden">Menu</span>
+            </button>
+            <h1 class="md-toolbar-tools">Hello World</h1>
+        </div>
+    </md-toolbar> -->
+    <md-whiteframe class="md-whiteframe-z2" style="height: 90px;" layout="row" hide-sm>
+        <div layout layout-align="start center">
+            <img data-ng-src="http://dummyimage.com/300x90/fff/000.png&text={{app.logoName}}">
+        </div>
+        <div layout layout-align="center center" flex>
+            <!-- <span>{{app.currentMenu.label}}</span> -->
+        </div>
+    </md-whiteframe>
+    <div layout="row" flex>
+        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$media('gt-sm')">
+            <md-toolbar class="md-primary" layout="row" layout-align="start center">
+                <span class="glyphicon glyphicon-list hvr-pulse" style="cursor: pointer;padding-left: 20px;" aria-hidden="true" data-ng-click="app.goTo({path:'/home'})"> {{app.menuLabel}}</span>
+            </md-toolbar>
+            <div layout="column" flex>
+                <md-whiteframe class="md-whiteframe-z1" data-ng-repeat="item in app.menuItems" data-ng-click="app.goTo(item)" style="height: 50px;" layout="row" layout-align="start center">
+                    <span class="glyphicon {{item.icon}} hvr-pulse" aria-hidden="true" style="cursor: pointer; padding: 5px;"> {{item.label}}</span>
+                </md-whiteframe>
+            </div>
+            <div hide-gt-sm layout layout-align="start end" flex>
+                <img src="img/logomini.png">
+            </div>
+        </md-sidenav>
+        <div layout="column" flex id="content">
+            <md-toolbar class="md-warn" layout="row">
+                <div layout layout-align="start center" style="padding-left: 10px;" flex>
+                    <md-button class="md-raised md-primary" data-ng-click="app.toggleSidenav('left')" aria-label="" hide-gt-sm>
+                        <span class="glyphicon glyphicon-list" style="cursor: pointer;" aria-hidden="true"></span>
+                    </md-button>
+                </div>
+                <div layout layout-align="center center" style="padding-left: 10px;" flex>
+                    <span>{{app.currentMenu.label}}</span>
+                </div>
+                <div layout layout-align="end center" style="padding-right: 10px;" flex>
+                    <md-button class="md-raised md-primary" data-ng-click="app.toggleSidenav('left')">
+                        <span class="glyphicon glyphicon-user" style="cursor: pointer;" aria-hidden="true"> User-Info</span>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-content class="md-padding md-whiteframe-z1" flex data-ng-view>
+               
+            </md-content>
+        </div>
+    </div>
+    <!-- <md-bottom-sheet class="md-primary" style="border: none; height: 50px; position: relative; top:-80px; padding-bottom: 8px;" layout="row" hide-sm> -->
+    <!-- <div layout layout-align="start center"> -->
+    <!-- <span>Other info or buttons or nothing :D</span> -->
+    <!-- </div> -->
+    <!-- <div layout layout-align="end center" flex> -->
+    <!-- <span>Powered by <img src="img/logomini.png"></img></span> -->
+    <!-- </div> -->
+    <!-- </md-bottom-sheet> -->
+</body>
+
+<script src="bower-components/angular/angular.js"></script>
+<script src="bower-components/angular-route/angular-route.js"></script>
+<script src="bower-components/angular-touch/angular-touch.js"></script>
+<script src="bower-components/angular-animate/angular-animate.js"></script>
+<script src="bower-components/angular-aria/angular-aria.js"></script>
+<script src="bower-components/angular-material/angular-material.js"></script>
+<script src="bower-components/angular-messages/angular-messages.js"></script>
+<script src="bower-components/angular-ui-grid/ui-grid.js"></script>
+
+<script src="js/app.js"></script>
+<script src="js/app-controllers.js"></script>
+
+</html>
