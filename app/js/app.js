@@ -7,33 +7,36 @@ angular.module('app', [
     'app-controllers'
 ]).
 config(['$mdThemingProvider', function($mdThemingProvider) {
-  $mdThemingProvider.theme('default')
-    .primaryPalette('blue')
-    .warnPalette('indigo')
-    .accentPalette('blue-grey');
+  // $mdThemingProvider.theme('default')
+  //   .primaryPalette('blue')
+  //   .warnPalette('indigo')
+  //   .accentPalette('blue-grey');
 }])
 .config(['$routeProvider', function($routeProvider) {
-    $routeProvider.otherwise({
-        redirectTo: '/home'
+    // $routeProvider.otherwise({
+    //     redirectTo: '/home'
+    // });
+    $routeProvider.when('/event', {
+        templateUrl: 'partials/event.html'
     });
-    $routeProvider.when('/home', {
-        templateUrl: 'partials/home.html'
+    $routeProvider.when('/event-list', {
+        templateUrl: 'partials/event-list.html'
     });
-    $routeProvider.when('/menuItem1', {
-        template: '<h2 layout layout-align="center center">content for MenuItem1</h2>'
+    $routeProvider.when('/test-map', {
+        templateUrl: 'partials/test-map.html'
     });
-    $routeProvider.when('/menuItem2', {
-        template: '<h2 layout layout-align="center center">content for MenuItem2</h2>'
-    });
-    $routeProvider.when('/menuItem3', {
-        template: '<h2 layout layout-align="center center">content for MenuItem3</h2>'
-    });
-    $routeProvider.when('/settings', {
-        templateUrl: 'partials/settings.html'
-    });
-    $routeProvider.when('/ui-grid-test', {
-        templateUrl: 'partials/ui-grid-test.html'
-    });
+    // $routeProvider.when('/menuItem2', {
+    //     template: '<h2 layout layout-align="center center">content for MenuItem2</h2>'
+    // });
+    // $routeProvider.when('/menuItem3', {
+    //     template: '<h2 layout layout-align="center center">content for MenuItem3</h2>'
+    // });
+    // $routeProvider.when('/settings', {
+    //     templateUrl: 'partials/settings.html'
+    // });
+    // $routeProvider.when('/ui-grid-test', {
+    //     templateUrl: 'partials/ui-grid-test.html'
+    // });
 }]).
 // config(['$translateProvider', function($translateProvider) {
     // register german translation table

@@ -50,7 +50,7 @@ function notifyLivereload(event) {
 gulp.task('default', function () {
   startExpress();
   startLivereload();
-  gulp.watch(['./app/index.html','./app/partials/**.html','./app/css/**.css','./app/js/**.js'], notifyLivereload);
+  gulp.watch(['./app/index.html','./app/partials/*.html','./app/css/*.css','./app/js/*.js'], notifyLivereload);
 });
 
 if (process.platform !== 'win32') {

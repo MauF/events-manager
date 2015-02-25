@@ -1,3 +1,32 @@
-.text-centred{
-	text-align: center;
+.body-background {
+    background-color: #E2F5FF;
+}
+.text-centred {
+    text-align: center;
+}
+.margin-right-10 {
+    margin-right: 10px;
+}
+.view-padding {
+    padding-top: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.clear {
+    clear: both;
+}
+
+.map-preview {
+    width: 100px;
+    margin: 16px;
+    border-radius: 100px;
+    border: 1px solid #ddd;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #ddd;
+}
+
+.border-top {
+    border-bottom: 1px solid #ddd;
 }
