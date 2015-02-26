@@ -1,0 +1,9 @@
+{
+  "firebase": "event-manager",
+  "public": ".",
+  "ignore": [
+    "firebase.json",
+    "**/.*",
+    "**/node_modules/**"
+  ]
+}

@@ -1,0 +1,72 @@
+<div data-ng-controller="EventListController as eventList">
+    <md-toolbar layout="row" class="md-theme-light">
+        <h1 class="md-toolbar-tools">
+            <span>Event List</span>
+        </h1>
+        <div layout-align="end center" class="md-toolbar-tools">
+            <md-input-container layout="row" layout-align="center center" style="padding-bottom: 0px;">
+                <span class="glyphicon glyphicon-search margin-right-10" aria-hidden="true"></span>
+                <input type="text" ng-model="eventList.filter">
+            </md-input-container>
+        </div>
+    </md-toolbar>
+    <md-content class="md-whiteframe-z1 md-padding" style="height: 100%">
+        <md-list>
+            <md-item ng-repeat="event in eventList.events | filter: eventList.filter" layout-align="center center">
+                <md-item-content layout="row" layout-sm="column" layout-md="column" flex>
+<!--                     <div class="md-tile-left" layout="row" layout-align="center center">
+                        <md-button class="md-fab" aria-label="Map">
+                            <span class="glyphicon glyphicon-map-marker"></span>
+                        </md-button>
+                    </div> -->
+                    <div layout="column" layout-align="center center" class="md-tile-content">
+                        <h2 style="text-decoration: underline; color: #0066FF">{{event.what}}</h3>
+                        <h3 style="color: #009933;">{{event.where}} 
+                            <a href="http://www.w3schools.com" target="_blank">
+                                <span style="cursor: pointer;" class="glyphicon glyphicon-map-marker"></span>
+                            </a> 
+                        </h4>
+                        <h3 style="color: #FFA319;">{{event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}</h4>
+                    </div>
+                    <p style="word-wrap: break-word; padding-left: 10px; padding-right: 10px;">{{event.description}}</p>
+                </md-item-content>
+                <md-item-content>
+                    <div layout flex layout-align="start center">
+                        <h2>Place left: <bold>{{event.limitTo - event.attendees.length}}</bold><h2>
+                    </div>
+                    <div layout flex layout-align="end center">
+                        <md-button class="md-raised md-primary margin-right-10">
+                            <span class="glyphicon glyphicon-edit"></span>
+                            <span hide-sm>edit</span>
+                        </md-button>
+                        <md-button class="md-raised md-primary margin-right-10">
+                            <span class="glyphicon glyphicon-ok"></span>
+                            <span hide-sm>join</span>
+                        </md-button>
+                        <md-button class="md-raised md-warn margin-right-10">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span hide-sm>left</span>
+                        </md-button>
+                        <md-button class="md-raised md-warn margin-right-10">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span hide-sm>left waiting list</span>
+                        </md-button>
+                        <md-button class="md-raised md-primary margin-right-10" >
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            <span hide-sm>waiting list</span>
+                        </md-button>
+                        <md-button class="md-raised md-accent margin-right-10">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                            <span hide-sm>attendees</span>
+                        </md-button>
+                        <md-button class="md-raised md-primary">
+                            <span class="glyphicon glyphicon-comment"></span>
+                            <span hide-sm>chat</span>
+                        </md-button>
+                    </div>
+                </md-item-content>
+                <hr data-ng-hide="$index == eventList.events.length -1 "/>
+            </md-item>
+        </md-list>
+    </md-content>
+</div>
