@@ -4,7 +4,7 @@
 angular.module('app-controllers', [
     'ngMaterial',
     'ngMessages',
-    'ui.bootstrap',
+    // 'ui.bootstrap',
     'mdDateTime',
     'ngAutocomplete',
     'ngMap'
