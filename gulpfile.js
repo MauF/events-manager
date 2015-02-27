@@ -82,11 +82,11 @@ gulp.task('create-js-dist', function () {
       'app/bower-components/ngAutocomplete/src/ngAutocomplete.js',
       'app/js/*.js'
     ])
-    .pipe(sourcemaps.init())
+    // .pipe(sourcemaps.init())
     .pipe(concat('app.js'))
     .pipe(ngAnnotate())
     .pipe(uglify())
-    .pipe(sourcemaps.write())
+    // .pipe(sourcemaps.write())
     .pipe(gulp.dest('app/dist'))
 });
 
@@ -98,9 +98,9 @@ gulp.task('create-css-dist', function () {
       'app/css/app.css'
     ])
     .pipe(concat('app.css'))
-    .pipe(sourcemaps.init())
+    // .pipe(sourcemaps.init())
     .pipe(minifyCSS())
-    .pipe(sourcemaps.write())
+    // .pipe(sourcemaps.write())
     .pipe(gulp.dest('app/dist/css'));
 });
 
@@ -117,7 +117,7 @@ gulp.task('copy-partials-dir', function () {
 });
 
 gulp.task('clean-dist-dir', function () {
-  return gulp.src('app/dist', {read: true, force: true}).pipe(log()).pipe(clean());
+  return gulp.src('app/dist/', {read: true, force: true}).pipe(log()).pipe(clean());
 });
 
 gulp.task('create-dist', function(callback) {
