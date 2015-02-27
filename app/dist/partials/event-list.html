@@ -1,10 +1,10 @@
 <div data-ng-controller="EventListController as eventList">
-    <md-toolbar layout="row" class="md-theme-light">
-        <h1 class="md-toolbar-tools">
+    <md-toolbar layout="row" layout-sm="column" layout-md="column" class="md-theme-light">
+        <h1 layout-align="center center" hide-sm class="md-toolbar-tools">
             <span>Event List</span>
         </h1>
-        <div layout-align="end center" class="md-toolbar-tools">
-            <md-input-container layout="row" layout-align="center center" style="padding-bottom: 0px;">
+        <div layout-align="start center" class="md-toolbar-tools">
+            <md-input-container layout="row" flex layout-align="center center" style="padding-bottom: 0px;">
                 <span class="glyphicon glyphicon-search margin-right-10" aria-hidden="true"></span>
                 <input type="text" ng-model="eventList.filter">
             </md-input-container>
@@ -21,20 +21,22 @@
                     </div> -->
                     <div layout="column" layout-align="center center" class="md-tile-content">
                         <h2 style="text-decoration: underline; color: #0066FF">{{event.what}}</h3>
+                        <h3 style="color: #FFA319;">{{event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}</h4>
                         <h3 style="color: #009933;">{{event.where}} 
                             <a href="http://www.w3schools.com" target="_blank">
                                 <span style="cursor: pointer;" class="glyphicon glyphicon-map-marker"></span>
                             </a> 
                         </h4>
-                        <h3 style="color: #FFA319;">{{event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}</h4>
                     </div>
-                    <p style="word-wrap: break-word; padding-left: 10px; padding-right: 10px;">{{event.description}}</p>
+                    <md-input-container flex>
+                        <textarea data-ng-model="event.description" columns="1" readonly></textarea>
+                    </md-input-container>
                 </md-item-content>
                 <md-item-content layout="row" layout-sm="column" layout-md="column">
-                    <div layout flex layout-align="start center">
+                    <div layout layout-align="start center">
                         <h2>Place left: <bold>{{event.limitTo - event.attendees.length}}</bold><h2>
                     </div>
-                    <div layout flex layout-align="end center">
+                    <div layout flex layout-align="center center">
                         <md-button class="md-raised md-primary margin-right-10">
                             <span class="glyphicon glyphicon-edit"></span>
                             <span hide-sm>edit</span>
