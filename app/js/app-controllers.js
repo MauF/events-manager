@@ -47,6 +47,13 @@ controller('AppController', ['$log', '$mdSidenav', '$mdBottomSheet', '$location'
         this.event.when = new Date().getTime();
     };
 
+    this.toggleMenu = function() {
+    $mdSidenav('menu').toggle()
+        .then(function(){
+            $log.debug("toggle Menu is done");
+        });
+  };
+
     this.resetEvent();
 
 }]).

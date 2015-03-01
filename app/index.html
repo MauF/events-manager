@@ -19,11 +19,35 @@
 
     <md-toolbar class="md-primay" layout="row">
         <div layout-align="start center" class="md-toolbar-tools">
-            <md-button class="md-raised" data-ng-click="app.resetToDefault()" aria-label="">
+            <md-button class="md-raised" data-ng-click="app.toggleMenu()" aria-label="">
                 <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
             </md-button>
         </div>
     </md-toolbar>
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="menu">
+      <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Menu</h1>
+      </md-toolbar>
+      <md-content class="md-padding">
+        <md-list>
+          <md-item>
+            <md-item-content>
+              <a flex layout layout-align="center" ng-href="#/event">Create Event</a>
+            </md-item-content>
+          </md-item>
+          <md-item>
+            <md-item-content>
+              <a flex layout layout-align="center" ng-href="#/list-event">List Event</a>
+            </md-item-content>
+          </md-item>
+          <md-item>
+            <md-item-content>
+              <a flex layout layout-align="center" ng-href="#/test-map">Test Map</a>
+            </md-item-content>
+          </md-item>
+        </md-list>
+      </md-content>
+    </md-sidenav>
     <md-content layout="row" flex class="body-background">
         <div layout="column" flex id="content" class="body-background">
             <div layout="column" layout-align="center" flex class="body-background md-padding view-padding" style="overflow-x: hidden;" data-ng-view></div>

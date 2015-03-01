@@ -1,6 +1,6 @@
 <div data-ng-controller="EventListController as eventList">
     <md-toolbar layout="row" layout-sm="column" layout-md="column" class="md-theme-light">
-        <h1 layout-align="center center" hide-sm class="md-toolbar-tools">
+        <h1 layout-align="start center" hide-sm class="md-toolbar-tools">
             <span>Event List</span>
         </h1>
         <div layout-align="start center" class="md-toolbar-tools">
@@ -29,7 +29,7 @@
                         </h4>
                     </div>
                     <md-input-container flex>
-                        <textarea data-ng-model="event.description" columns="1" readonly></textarea>
+                        <textarea data-ng-model="event.description" readonly></textarea>
                     </md-input-container>
                 </md-item-content>
                 <md-item-content layout="row" layout-sm="column" layout-md="column">

@@ -13,9 +13,9 @@ config(['$mdThemingProvider', function($mdThemingProvider) {
   //   .accentPalette('blue-grey');
 }])
 .config(['$routeProvider', function($routeProvider) {
-    // $routeProvider.otherwise({
-    //     redirectTo: '/home'
-    // });
+    $routeProvider.otherwise({
+        redirectTo: '/event-list'
+    });
     $routeProvider.when('/event', {
         templateUrl: 'partials/event.html'
     });
