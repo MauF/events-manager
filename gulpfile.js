@@ -9,6 +9,8 @@ var clean = require('gulp-clean');
 var gulpIgnore = require('gulp-ignore');
 var runSequence = require('run-sequence');
 var tap = require('gulp-tap');
+var useref = require('gulp-useref');
+var gulpif = require('gulp-if');
 
 var EXPRESS_PORT = 8000;
 var EXPRESS_ROOT = __dirname;
@@ -66,44 +68,6 @@ gulp.task('default', function () {
   gulp.watch(['./app/index.html','./app/partials/*.html','./app/css/*.css','./app/js/*.js'], notifyLivereload);
 });
 
-gulp.task('create-js-dist', function () {
-  return gulp.src([
-      'app/bower-components/angular/angular.js',
-      'app/bower-components/angular-route/angular-route.js',
-      'app/bower-components/angular-touch/angular-touch.js',
-      'app/bower-components/angular-animate/angular-animate.js',
-      'app/bower-components/angular-aria/angular-aria.js',
-      'app/bower-components/angular-material/angular-material.js',
-      'app/bower-components/angular-messages/angular-messages.js',
-      // 'app/bower-components/angular-bootstrap/ui-bootstrap-tpls.js',
-      'app/bower-components/md-date-time/dist/md-date-time.js',
-      'app/bower-components/ngmap/build/scripts/ng-map.js',
-      'app/bower-components/ngAutocomplete/src/ngAutocomplete.js',
-      'app/bower-components/ngAutocomplete/src/ngAutocomplete.js',
-      'app/js/*.js'
-    ])
-    // .pipe(sourcemaps.init())
-    .pipe(concat('app.js'))
-    .pipe(ngAnnotate())
-    .pipe(uglify())
-    // .pipe(sourcemaps.write())
-    .pipe(gulp.dest('app/dist'))
-});
-
-gulp.task('create-css-dist', function () {
-  return gulp.src([
-      'app/bower-components/bootstrap-css-only/css/bootstrap.css',
-      'app/bower-components/angular-material/angular-material.css',
-      'app/bower-components/md-date-time/dist/md-date-time.css',
-      'app/css/app.css'
-    ])
-    .pipe(concat('app.css'))
-    // .pipe(sourcemaps.init())
-    .pipe(minifyCSS())
-    // .pipe(sourcemaps.write())
-    .pipe(gulp.dest('app/dist/css'));
-});
-
 gulp.task('copy-font-dir', function () {
   return gulp.src(['app/bower-components/bootstrap-css-only/fonts/**/*.*']).pipe(log()).pipe(gulp.dest('app/dist/fonts'));
 });
@@ -117,17 +81,28 @@ gulp.task('copy-partials-dir', function () {
 });
 
 gulp.task('clean-dist-dir', function () {
-  return gulp.src('app/dist/', {read: true, force: true}).pipe(log()).pipe(clean());
+  gulp.src('app/dist/', {read: true, force: true}).pipe(log()).pipe(clean());
 });
 
 gulp.task('create-dist', function(callback) {
   runSequence('clean-dist-dir'
-              ,'copy-font-dir'
+              ,['copy-font-dir'
               ,'copy-partials-dir'
               ,'copy-dist-util'
-              ,'create-js-dist'
-              ,'create-css-dist'
+              ,'create-html']
               ,callback);
+});
+ 
+gulp.task('create-html', function () {
+    var assets = useref.assets();
+    
+    return gulp.src('app/index.html')
+        .pipe(assets)
+        .pipe(gulpif('*.js', uglify()))
+        .pipe(gulpif('*.css', minifyCSS()))
+        .pipe(assets.restore())
+        .pipe(useref())
+        .pipe(gulp.dest('app/dist'));
 });
 
 if (process.platform !== 'win32') {

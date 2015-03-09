@@ -25,6 +25,8 @@
     "angular-bootstrap": "~0.12.1",
     "md-date-time": "~0.0.11",
     "ngmap": "~1.3.1",
-    "ngAutocomplete": "~1.0.0"
+    "ngAutocomplete": "~1.0.0",
+    "firebase": "~2.2.2",
+    "angularfire": "~1.0.0"
   }
 }

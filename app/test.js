@@ -27,7 +27,7 @@ app.controller("SampleCtrl", ["$scope", "Auth", "$http", function($scope, Auth, 
     $http({
         method: 'POST',
         url: "https://api.mailgun.net/v2/sandbox2c277c6207da4f0487c8ca09f6fc3c06.mailgun.org/messages",
-        headers: {'Content-Type': 'application/x-www-form-urlencoded','Access-Control-Allow-Headers': true},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         transformRequest: function(obj) {
             var str = [];
             for(var p in obj)

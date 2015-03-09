@@ -4,26 +4,51 @@
 angular.module('app', [
     'ngRoute',
     'ngMaterial',
-    'app-controllers'
+    'app-controllers',
+    'app-factories'
 ]).
 config(['$mdThemingProvider', function($mdThemingProvider) {
   // $mdThemingProvider.theme('default')
   //   .primaryPalette('blue')
   //   .warnPalette('indigo')
   //   .accentPalette('blue-grey');
+}]).
+run(["$rootScope", "$location", function($rootScope, $location) {
+    $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+      // We can catch the error thrown when the $requireAuth promise is rejected
+      // and redirect the user back to the home page
+      if (error === "AUTH_REQUIRED") {
+        $location.path("/login");
+      }
+    });
 }])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.otherwise({
         redirectTo: '/event-list'
     });
+    $routeProvider.when('/login', {
+        templateUrl: 'partials/login.html',
+        resolve: {
+            "currentAuth": ["Auth", function(Auth) {
+                return Auth.$waitForAuth();
+        }]}
+    });
     $routeProvider.when('/event', {
-        templateUrl: 'partials/event.html'
+        templateUrl: 'partials/event.html',
+        resolve: {
+            "currentAuth": ["Auth", function(Auth) {
+                return Auth.$requireAuth();
+        }]}
     });
     $routeProvider.when('/event-list', {
-        templateUrl: 'partials/event-list.html'
+        templateUrl: 'partials/event-list.html',
+        resolve: {
+            "currentAuth": ["Auth", function(Auth) {
+                return Auth.$requireAuth();
+        }]}
     });
-    $routeProvider.when('/test-map', {
-        templateUrl: 'partials/test-map.html'
+    $routeProvider.when('/map/:d/:K/:address', {
+        templateUrl: 'partials/map.html'
     });
     // $routeProvider.when('/menuItem2', {
     //     template: '<h2 layout layout-align="center center">content for MenuItem2</h2>'

@@ -5,14 +5,14 @@
         </h1>
         <div layout-align="end center" class="md-toolbar-tools">
             <md-button class="md-raised md-accent margin-right-10" 
-            data-ng-disabled="!(app.event.what && app.event.where && app.event.when)" data-ng-click="app.createEvent()" aria-label="">
+            data-ng-disabled="!(event.data.what && event.data.where && event.data.when)" data-ng-click="event.createEvent(event.data)" aria-label="">
                 <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
                 <span hide-sm>save</span>
                 <md-tooltip>
                     save
                 </md-tooltip>
             </md-button>
-            <md-button class="md-raised md-warn" data-ng-click="app.resetEvent()" aria-label="">
+            <md-button class="md-raised md-warn" data-ng-click="event.resetEvent()" aria-label="">
                 <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
                 <span hide-sm>reset</span>
                 <md-tooltip>
@@ -26,34 +26,34 @@
             <div layout layout-sm="column">
                 <md-input-container flex>
                     <label>What</label>
-                    <input required name="title" data-ng-model="app.event.what">
+                    <input required name="title" data-ng-model="event.data.what">
                     <div data-ng-messages="eventForm.title.$error">
                         <div style="color: red;" data-ng-message="required">This is required.</div>
                     </div>
                 </md-input-container>
                 <md-input-container flex>
                     <!-- <label>Where</label> -->
-                    <input required name="where" ng-autocomplete details="app.event.whereDetails" data-ng-model="app.event.where">
+                    <input required name="where" ng-autocomplete details="event.data.whereDetails" data-ng-model="event.data.where">
                     <div data-ng-messages="eventForm.where.$error">
                         <div style="color: red;" data-ng-message="required">This is required.</div>
                     </div>
                 </md-input-container>
                 <md-input-container flex="15">
                     <label>Limit to</label>
-                    <input type="number" name="limitTo" ng-model="app.event.limitTo" min="1" max="5000">
+                    <input type="number" name="limitTo" ng-model="event.data.limitTo" min="1" max="5000">
                 </md-input-container>
             </div>
             <md-input-container flex layout-align="center">
-                <md-button hide-sm class="md-raised" data-ng-click="app.openDataTimePicker($event)">
-                    When:<span >{{app.event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}} <span>
+                <md-button hide-sm class="md-raised" data-ng-click="event.openDataTimePicker($event)">
+                    When:<span >{{event.data.when | date : 'EEEE, MMMM d, y h:mm:ss a'}} <span>
                 </md-button>
-                <md-button hide-gt-sm class="md-raised" data-ng-click="app.openDataTimePicker($event)">
-                    When:<span>{{app.event.when | date : 'short'}} <span>
+                <md-button hide-gt-sm class="md-raised" data-ng-click="event.openDataTimePicker($event)">
+                    When:<span>{{event.data.when | date : 'short'}} <span>
                 </md-button>
             </md-input-container>
             <md-input-container flex>
                 <label>Description</label>
-                <textarea data-ng-model="app.event.description" name="description" columns="1" md-maxlength="1500"></textarea>
+                <textarea data-ng-model="event.data.description" name="description" columns="1" md-maxlength="1500"></textarea>
                 <div data-ng-messages="eventForm.description.$error">
                     <div style="color: red;" data-ng-message="required">Description too long...</div>
                 </div>
@@ -62,5 +62,5 @@
     </md-content>
 </div>
 <!-- <div layout="column">
-    <pre> {{app.event|json}}</pre>
+    <pre> {{event.event|json}}</pre>
 </div> -->

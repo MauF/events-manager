@@ -1,6 +1,6 @@
 <div data-ng-controller="EventListController as eventList">
-    <md-toolbar layout="row" layout-sm="column" layout-md="column" class="md-theme-light">
-        <h1 layout-align="center center" hide-sm class="md-toolbar-tools">
+    <md-toolbar layout="row" class="md-theme-light">
+        <h1 layout-align="start center" class="md-toolbar-tools">
             <span>Event List</span>
         </h1>
         <div layout-align="start center" class="md-toolbar-tools">
@@ -11,63 +11,66 @@
         </div>
     </md-toolbar>
     <md-content class="md-whiteframe-z1 md-padding" style="height: 100%">
-        <md-list>
+        <label data-ng-show="eventList.events.length == 0" class="md-padding" layout layout-sm="column" flex layout-align="center">
+            <span layout layout-align="center" flex >There is no events available!</span>
+            <a layout layout-align="center" flex href="#/event">&nbsp;Click here to create a event...</a>
+        </label>
+        <md-list data-ng-show="eventList.events.length > 0">
             <md-item ng-repeat="event in eventList.events | filter: eventList.filter" layout-align="center center">
                 <md-item-content layout="row" layout-sm="column" layout-md="column" flex>
-<!--                     <div class="md-tile-left" layout="row" layout-align="center center">
-                        <md-button class="md-fab" aria-label="Map">
-                            <span class="glyphicon glyphicon-map-marker"></span>
-                        </md-button>
-                    </div> -->
-                    <div layout="column" layout-align="center center" class="md-tile-content">
-                        <h2 style="text-decoration: underline; color: #0066FF">{{event.what}}</h3>
-                        <h3 style="color: #FFA319;">{{event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}</h4>
-                        <h3 style="color: #009933;">{{event.where}} 
-                            <a href="http://www.w3schools.com" target="_blank">
-                                <span style="cursor: pointer;" class="glyphicon glyphicon-map-marker"></span>
-                            </a> 
-                        </h4>
+                    <div layout="column" layout-align="center center" flex class="md-tile-content">
+                        <div class="list-group" style="width: 100%;" >
+                            <span class="list-group-item" style="text-align: center;">
+                                <i class="glyphicon glyphicon-circle-arrow-right"></i>&nbsp; {{event.what}}
+                            </span>
+                            <a class="list-group-item" href="{{event.organizer.url}}" target="_blank" style="text-align: center;">
+                                <i class="glyphicon glyphicon-user"></i>&nbsp; {{event.organizer.name}}
+                            </a>
+                            <span class="list-group-item" style="text-align: center;">
+                                <i class="glyphicon glyphicon-calendar"></i>&nbsp; {{event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}
+                            </span>
+                            <a class="list-group-item" href="{{event.whereDetails.url}}" target="_blank" style="text-align: center;">
+                                <i class="glyphicon glyphicon-map-marker"></i>&nbsp; {{event.where}}
+                            </a>
+                            <span class="list-group-item">
+                                <p>Description: {{event.description}}</p>
+                            </span>
+                            <span class="list-group-item" style="text-align: right;">
+                                place left: <bold>{{eventList.calculatePlaceLeft(event)}}</bold>
+                            </span>
+                        </div>
                     </div>
-                    <md-input-container flex>
-                        <textarea data-ng-model="event.description" columns="1" readonly></textarea>
-                    </md-input-container>
                 </md-item-content>
                 <md-item-content layout="row" layout-sm="column" layout-md="column">
-                    <div layout layout-align="start center">
-                        <h2>Place left: <bold>{{event.limitTo - event.attendees.length}}</bold><h2>
-                    </div>
                     <div layout flex layout-align="center center">
-                        <md-button class="md-raised md-primary margin-right-10">
+                        <md-button class="md-raised md-primary margin-right-10" data-ng-show="eventList.isEditBtnVisible(event)">
                             <span class="glyphicon glyphicon-edit"></span>
                             <span hide-sm>edit</span>
                         </md-button>
-                        <md-button class="md-raised md-primary margin-right-10">
+                        <md-button class="md-raised md-primary margin-right-10" 
+                        data-ng-click="eventList.partecipate(event, eventList.isTheAttendeesListFull(event))" 
+                        data-ng-show="eventList.isJoinBtnVisible(event)">
                             <span class="glyphicon glyphicon-ok"></span>
-                            <span hide-sm>join</span>
+                            <span hide-sm>join <span data-ng-show="eventList.isTheAttendeesListFull(event)">the waiting list</span></span>
                         </md-button>
-                        <md-button class="md-raised md-warn margin-right-10">
+                        <md-button class="md-raised md-warn margin-right-10" 
+                        data-ng-click="eventList.left(event, eventList.isTheAttendeesListFull(event))"
+                        data-ng-show="eventList.isLeftBtnVisible(event)">
                             <span class="glyphicon glyphicon-remove"></span>
-                            <span hide-sm>left</span>
+                            <span hide-sm>left <span data-ng-show="eventList.isTheAttendeesListFull(event)">the waiting list</span></span>
                         </md-button>
-                        <md-button class="md-raised md-warn margin-right-10">
-                            <span class="glyphicon glyphicon-remove"></span>
-                            <span hide-sm>left waiting list</span>
-                        </md-button>
-                        <md-button class="md-raised md-primary margin-right-10" >
-                            <span class="glyphicon glyphicon-list-alt"></span>
-                            <span hide-sm>waiting list</span>
-                        </md-button>
-                        <md-button class="md-raised md-accent margin-right-10">
+                        <md-button class="md-raised md-accent margin-right-10" data-ng-show="eventList.isAttendeesBtnVisible(event)" data-ng-click="eventList.showAttendees(event, $event)">
                             <span class="glyphicon glyphicon-eye-open"></span>
                             <span hide-sm>attendees</span>
                         </md-button>
-                        <md-button class="md-raised md-primary">
+                        <md-button class="md-raised md-primary" data-ng-show="false">
                             <span class="glyphicon glyphicon-comment"></span>
                             <span hide-sm>chat</span>
                         </md-button>
                     </div>
                 </md-item-content>
                 <hr data-ng-hide="$index == eventList.events.length -1 "/>
+                <!-- <pre>{{event|json:true}}</pre> -->
             </md-item>
         </md-list>
     </md-content>
