@@ -1,0 +1,22 @@
+<md-dialog aria-label="List of attendees">
+  <md-content>
+    <!-- <md-subheader class="md-sticky-no-effect" style="background-color: #dcedc8;">List of attendees</md-subheader> -->
+    <md-list data-ng-show="attendees.length > 0">
+            <md-item ng-repeat="attendee in attendees" layout-align="center center">
+                <md-item-content layout="row" flex>
+                  <a href="{{attendee.url}}" target="_blank" layout style="text-decoration:none;">
+                    <span layout flex>
+                      <img layout layout-align="start center" data-ng-src="{{attendee.img}}" style="width: 36px; height: 36px; border-radius: 50%;"/>
+                      <span layout layout-align="end center">&nbsp; {{attendee.name}}</span>
+                    </span>
+                  </a>
+                </md-item-content>
+            </md-item>
+    </md-list>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button ng-click="ok()" class="md-primary">
+      Ok
+    </md-button>
+  </div>
+</md-dialog>

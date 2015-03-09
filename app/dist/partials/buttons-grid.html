@@ -1,0 +1,19 @@
+<md-bottom-sheet class="md-grid" style="background-color: #01579b;">
+  <md-list layout layout-align="center center">
+    <md-item layout layout-align="center center" data-ng-show="!isLocation('event')">
+      <md-button class="md-fab md-primary" aria-label="create new event" data-ng-click="goTo('event')">
+        <i class="fa fa-calendar fa-2x"></i>
+      </md-button>
+    </md-item>
+    <md-item layout layout-align="center center" data-ng-show="!isLocation('event-list')">
+      <md-button class="md-fab md-primary" aria-label="create new event" data-ng-click="goTo('event-list')">
+        <i class="fa fa-list-alt fa-2x"></i>
+      </md-button>
+    </md-item>
+    <md-item layout layout-align="center center">
+      <md-button class="md-fab md-warn" aria-label="sign-out" data-ng-click="logout()">
+        <i class="fa fa-sign-out fa-2x"></i>
+      </md-button>
+    </md-item>
+  </md-list>
+</md-bottom-sheet>

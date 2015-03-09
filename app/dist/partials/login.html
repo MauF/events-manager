@@ -1,0 +1,21 @@
+<div data-ng-controller="LoginController as login" layout="column">
+	<md-toolbar layout="row" class="md-theme-light">
+			<i class="fa fa-sign-in fa-3x" style="padding-left:10px;"></i>
+	        <h1 class="md-toolbar-tools">
+	            <span>&nbsp;Please Sign in using:</span>
+	        </h1>
+	</md-toolbar>
+	<md-content class="md-whiteframe-z1 md-padding">
+		<section layout="column" layout-align="center center">
+		    <md-button aria-label="facebook" class="md-raised md-primary" style="width: 100%;" data-ng-click="app.auth.$authWithOAuthPopup('facebook')">
+		    	<i class="fa fa-facebook-official fa-3x"></i>
+		    </md-button>
+		</section>
+		<h3 layout layout-align="center center" >or</h3>
+		<section layout="column" layout-align="center center">
+		    <md-button aria-label="google+" class="md-raised md-warn" style="width: 100%;" data-ng-click="app.auth.$authWithOAuthPopup('google')">
+		    	<i class="fa fa-google-plus fa-3x"></i>
+		    </md-button>
+		</section>
+	</md-content>
+</div>

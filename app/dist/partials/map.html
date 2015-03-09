@@ -1,0 +1,17 @@
+<div data-ng-controller="MapController as map">
+	<md-toolbar layout="row" class="md-theme-light">
+	        <h1 class="md-toolbar-tools">
+	            <span>{{map.params.address}}</span>
+	        </h1>
+	</md-toolbar>
+	<md-content class="md-whiteframe-z1 md-padding">
+		<map center="{{map.params.K}},{{map.params.d}}" zoom="15" pan-control="true" pan-control-options="{position:'TOP_RIGHT'}" map-type-control="true" map-type-control-options="{style:'HORIZONTAL_BAR', position:'BOTTOM_CENTER'}" zoom-control="true" zoom-control-options="{style:'LARGE', position:'LEFT_CENTER'}" scale-control="true" street-view-control="true" street-view-control-options="{position:'LEFT_TOP'}">
+			<info-window position="{{map.params.K}},{{map.params.d}}" visible="true">
+	            <span>{{map.params.address}}</span>
+	        </info-window>
+	    </map>
+    </md-content>
+</div>
+
+
+
