@@ -9,17 +9,15 @@ factory('Auth', ['$firebaseAuth', 'firebase-url', function($firebaseAuth, fireba
   }
 ]).
 factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', function($firebaseArray, firebaseUrl, $log, $rootScope) {
-    var ref = new Firebase(firebaseUrl+'events');
+    var ref = new Firebase(firebaseUrl+"events");
 
     var userLoggedIn = undefined;
 
     var events = $firebaseArray(ref);
 
-    $rootScope.loadingInProgress = true;
-
     events.$loaded()
-    .then(function(x) {
-        $rootScope.loadingInProgress = false;
+    .then(function(data) {
+        $log.info("data loaded!");
     })
     .catch(function(error) {
         $log.error("Error:", error);
@@ -37,6 +35,8 @@ factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', f
             then(function(ref) {
               var id = ref.key();
               $log.info("added record with id " + id);
+            }).catch(function(error) {
+                $log.error("addEvent - Error:", error);
             });
     };
 
@@ -59,9 +59,9 @@ factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', f
     		event[queue] = {};
     	}
 
-    	var attendee = {name: userLoggedIn.name, img: userLoggedIn.img, url: userLoggedIn.url, uid:userLoggedIn.uid};
+    	var attendee = {name: userLoggedIn.name, img: userLoggedIn.img, url: userLoggedIn.url.toString(), uid:userLoggedIn.uid};
     	event[queue][attendee.uid] = attendee;
-        save(event);
+        saveEvent(event);
     }
 
     function left(event) {
@@ -70,23 +70,46 @@ factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', f
     	} else if(event['waitingList'][userLoggedIn.uid]) {
     		delete event['waitingList'][userLoggedIn.uid];
     	}
-        save(event);
+        saveEvent(event);
     }
 
-    function save(event) {
+    function saveEvent(event) {
         events.$save(event).
             then(function(ref) {
-              $log.info("saved record:" , angular.toJson(ref, true));
+              $log.info("saved record - id:" , ref.$id);
+              return ref;
+            }).catch(function(error) {
+                $log.error("saveEvent - Error:", error);
             });
+    };
+
+    function getEvent(idEvent) {
+        var event = events.$getRecord(idEvent);
+        $log.info("event retrived: " + event);
+        return event;
+    };
+
+    function deleteEvent(event) {
+        var event = events.$remove(event)
+        .then(function(ref) {
+            $log.info("event deleted: " + ref);
+            return ref;
+        }).catch(function(error) {
+            $log.error("deleteEvent - Error:", error);
+        });
     };
 
     return {
     	getAll : getAll,
+        getEvent: getEvent,
     	addEvent : addEvent,
     	setUserLoggedIn: setUserLoggedIn,
     	getUserLoggedIn: getUserLoggedIn,
     	partecipate: partecipate,
-    	left: left
+    	left: left,
+        deleteEvent: deleteEvent,
+        saveEvent:saveEvent
+
     };
 
   }

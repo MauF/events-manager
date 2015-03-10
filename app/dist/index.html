@@ -14,7 +14,6 @@
 </head>
 
 <body class="body-background" layout="column">
-
     <md-toolbar class="md-primay">
         <div layout="row" flex>
           <div layout flex layout-align="start center" style="padding-left: 10px;" data-ng-show="app.userLoggedIn.name">
@@ -32,7 +31,7 @@
             <a href="{{app.userLoggedIn.url}}" target="_blank" layout style="text-decoration:none;color: white;">
               <span>
                 <img data-ng-src="{{ app.userLoggedIn.img}}" style="width: 52px; height: 52px; border-radius: 50%;"/>
-                <span hide-sm hide-md>&nbsp; {{app.userLoggedIn.name}}</span>
+                <span hide-sm hide-md style="font-size: 0.8em;">&nbsp; {{app.userLoggedIn.name}}</span>
               </span>
             </a>
           </div>
@@ -45,7 +44,7 @@
     </md-content>
 </body>
 
-<script src="http://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&sensor=false"></script>
 <script src="js/app.js"></script>
 
 

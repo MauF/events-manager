@@ -1,20 +1,20 @@
 <div data-ng-controller="EventController as event">
     <md-toolbar layout="row" class="md-theme-light">
         <h1 class="md-toolbar-tools">
-            <span>Create a new Event</span>
+            <span>{{event.title}}</span>
         </h1>
         <div layout-align="end center" class="md-toolbar-tools">
             <md-button class="md-raised md-accent margin-right-10" 
-            data-ng-disabled="!(event.data.what && event.data.where && event.data.when)" data-ng-click="event.createEvent(event.data)" aria-label="">
+            data-ng-disabled="!(event.data.what && event.data.where && event.data.when)" data-ng-click="event.createOrUpdateEvent(event.data)" aria-label="">
                 <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
-                <span hide-sm>save</span>
+                <span hide-sm>{{event.saveBtnLabel}}</span>
                 <md-tooltip>
                     save
                 </md-tooltip>
             </md-button>
-            <md-button class="md-raised md-warn" data-ng-click="event.resetEvent()" aria-label="">
+            <md-button class="md-raised md-warn" data-ng-click="event.resetOrDeleteEvent(event.data, $event)" aria-label="">
                 <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
-                <span hide-sm>reset</span>
+                <span hide-sm>{{event.resetBtnLabel}}</span>
                 <md-tooltip>
                     reset
                 </md-tooltip>
@@ -60,7 +60,8 @@
             </md-input-container>
         </form>
     </md-content>
+<!--     <div layout="column">
+        <pre> {{event|json}}</pre>
+    </div> -->
 </div>
-<!-- <div layout="column">
-    <pre> {{event.event|json}}</pre>
-</div> -->
+

@@ -13,7 +13,7 @@
     <md-content class="md-whiteframe-z1 md-padding" style="height: 100%">
         <label data-ng-show="eventList.events.length == 0" class="md-padding" layout layout-sm="column" flex layout-align="center">
             <span layout layout-align="center" flex >There is no events available!</span>
-            <a layout layout-align="center" flex href="#/event">&nbsp;Click here to create a event...</a>
+            <a layout layout-align="center" flex href="#/event/new">&nbsp;Click here to create a event...</a>
         </label>
         <md-list data-ng-show="eventList.events.length > 0">
             <md-item ng-repeat="event in eventList.events | filter: eventList.filter" layout-align="center center">
@@ -43,7 +43,7 @@
                 </md-item-content>
                 <md-item-content layout="row" layout-sm="column" layout-md="column">
                     <div layout flex layout-align="center center">
-                        <md-button class="md-raised md-primary margin-right-10" data-ng-show="eventList.isEditBtnVisible(event)">
+                        <md-button class="md-raised md-primary margin-right-10" data-ng-show="eventList.isEditBtnVisible(event)" data-ng-click="eventList.edit(event)">
                             <span class="glyphicon glyphicon-edit"></span>
                             <span hide-sm>edit</span>
                         </md-button>

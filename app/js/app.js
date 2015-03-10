@@ -33,7 +33,7 @@ run(["$rootScope", "$location", function($rootScope, $location) {
                 return Auth.$waitForAuth();
         }]}
     });
-    $routeProvider.when('/event', {
+    $routeProvider.when('/event/:id', {
         templateUrl: 'partials/event.html',
         resolve: {
             "currentAuth": ["Auth", function(Auth) {
