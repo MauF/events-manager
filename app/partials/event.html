@@ -9,14 +9,14 @@
                 <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>
                 <span hide-sm>{{event.saveBtnLabel}}</span>
                 <md-tooltip>
-                    save
+                    {{event.saveBtnLabel}}
                 </md-tooltip>
             </md-button>
             <md-button class="md-raised md-warn" data-ng-click="event.resetOrDeleteEvent(event.data, $event)" aria-label="">
                 <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
                 <span hide-sm>{{event.resetBtnLabel}}</span>
                 <md-tooltip>
-                    reset
+                    {{event.resetBtnLabel}}
                 </md-tooltip>
             </md-button>
         </div>

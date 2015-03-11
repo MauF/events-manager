@@ -1,29 +1,30 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('app-factories', ['firebase']).
+angular.module('app-factories', ['firebase','ngMaterial']).
 constant('firebase-url', 'https://event-manager.firebaseio.com/').
 factory('Auth', ['$firebaseAuth', 'firebase-url', function($firebaseAuth, firebaseUrl) {
     var ref = new Firebase(firebaseUrl);
     return $firebaseAuth(ref);
   }
 ]).
-factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', function($firebaseArray, firebaseUrl, $log, $rootScope) {
-    var ref = new Firebase(firebaseUrl+"events");
+factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', '$mdToast', function($firebaseArray, firebaseUrl, $log, $rootScope, $mdToast) {
+    var ref = new Firebase(firebaseUrl+'events');
 
     var userLoggedIn = undefined;
 
     var events = $firebaseArray(ref);
 
-    events.$loaded()
-    .then(function(data) {
-        $log.info("data loaded!");
-    })
-    .catch(function(error) {
-        $log.error("Error:", error);
-    });
-
     // var events = [];
+
+    function showToast(msg) {
+        $mdToast.show(
+            $mdToast.simple()
+                .content(msg)
+                .hideDelay(2000)
+        );
+    }
+    
 
     function getAll () {
     	return events;
@@ -35,6 +36,7 @@ factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', f
             then(function(ref) {
               var id = ref.key();
               $log.info("added record with id " + id);
+              return ref;
             }).catch(function(error) {
                 $log.error("addEvent - Error:", error);
             });
@@ -59,14 +61,34 @@ factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', f
     		event[queue] = {};
     	}
 
-    	var attendee = {name: userLoggedIn.name, img: userLoggedIn.img, url: userLoggedIn.url.toString(), uid:userLoggedIn.uid};
+    	var attendee = {name: userLoggedIn.name, img: userLoggedIn.img, url: userLoggedIn.url.toString(), uid:userLoggedIn.uid, timeStamp: new Date().getTime()};
     	event[queue][attendee.uid] = attendee;
+
         saveEvent(event);
+    }
+
+    function getFirstElement(obj) {
+        var elem = undefined;
+        for (var key in obj) {
+            if(!elem) {
+                elem = obj[key];
+            } else if(elem.timeStamp > obj[key].timeStamp){
+                elem = obj[key];
+            }
+        }
+        return elem;
     }
 
     function left(event) {
     	if(event['attendees'][userLoggedIn.uid]) {
+            // if the list is full and someone left, the first in the waitingList will join the attendees
+            if(mapLength(event['attendees']) == event.limitTo && event['waitingList'] && mapLength(event['attendees']) >= 1 ) {
+                var attendee = getFirstElement(event['waitingList']);
+                event['attendees'][attendee.uid] = attendee;
+                delete event['waitingList'][attendee.uid];
+            }
     		delete event['attendees'][userLoggedIn.uid];
+
     	} else if(event['waitingList'][userLoggedIn.uid]) {
     		delete event['waitingList'][userLoggedIn.uid];
     	}
@@ -99,6 +121,14 @@ factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', f
         });
     };
 
+    function mapLength(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+    };
+
     return {
     	getAll : getAll,
         getEvent: getEvent,
@@ -108,8 +138,9 @@ factory('events-api', ['$firebaseArray', 'firebase-url', '$log', '$rootScope', f
     	partecipate: partecipate,
     	left: left,
         deleteEvent: deleteEvent,
-        saveEvent:saveEvent
-
+        saveEvent:saveEvent,
+        showToast:showToast,
+        mapLength: mapLength
     };
 
   }

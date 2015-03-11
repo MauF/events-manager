@@ -11,9 +11,12 @@
         </div>
     </md-toolbar>
     <md-content class="md-whiteframe-z1 md-padding" style="height: 100%">
-        <label data-ng-show="eventList.events.length == 0" class="md-padding" layout layout-sm="column" flex layout-align="center">
+        <label data-ng-hide="eventList.showEvents" class="md-padding" layout layout-sm="column" flex layout-align="center">
+            <span layout layout-align="center" flex >Loading...</span>
+        </label>
+        <label data-ng-show="eventList.showEvents && eventList.events.length == 0" class="md-padding" layout layout-sm="column" flex layout-align="center">
             <span layout layout-align="center" flex >There is no events available!</span>
-            <a layout layout-align="center" flex href="#/event">&nbsp;Click here to create a event...</a>
+            <a layout layout-align="center" flex href="#/event/new">&nbsp;Click here to create a event...</a>
         </label>
         <md-list data-ng-show="eventList.events.length > 0">
             <md-item ng-repeat="event in eventList.events | filter: eventList.filter" layout-align="center center">
@@ -24,7 +27,7 @@
                                 <i class="glyphicon glyphicon-circle-arrow-right"></i>&nbsp; {{event.what}}
                             </span>
                             <a class="list-group-item" href="{{event.organizer.url}}" target="_blank" style="text-align: center;">
-                                <i class="glyphicon glyphicon-user"></i>&nbsp; {{event.organizer.name}}
+                                <img data-ng-src="{{event.organizer.img}}" style="width: 18px; height: 18px; border-radius: 50%;"/>&nbsp;{{event.organizer.name}}
                             </a>
                             <span class="list-group-item" style="text-align: center;">
                                 <i class="glyphicon glyphicon-calendar"></i>&nbsp; {{event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}
@@ -35,8 +38,9 @@
                             <span class="list-group-item">
                                 <p>Description: {{event.description}}</p>
                             </span>
-                            <span class="list-group-item" style="text-align: right;">
-                                place left: <bold>{{eventList.calculatePlaceLeft(event)}}</bold>
+                            <span layout class="list-group-item">
+                                <span flex layout layout-align="start" style="font-size: 0.9em; color: {{eventList.isTheUserInTheWaitingList(event)?'orange':'green'}}"> {{eventList.writeStatus(event)}} </span>
+                                <span flex layout layout-align="end"> place left: <bold>{{eventList.calculatePlaceLeft(event)}}</bold> </span>
                             </span>
                         </div>
                     </div>
@@ -57,7 +61,7 @@
                         data-ng-click="eventList.left(event, eventList.isTheAttendeesListFull(event))"
                         data-ng-show="eventList.isLeftBtnVisible(event)">
                             <span class="glyphicon glyphicon-remove"></span>
-                            <span hide-sm>left <span data-ng-show="eventList.isTheAttendeesListFull(event)">the waiting list</span></span>
+                            <span hide-sm>left <span data-ng-show="eventList.isTheUserInTheWaitingList(event)">the waiting list</span></span>
                         </md-button>
                         <md-button class="md-raised md-accent margin-right-10" data-ng-show="eventList.isAttendeesBtnVisible(event)" data-ng-click="eventList.showAttendees(event, $event)">
                             <span class="glyphicon glyphicon-eye-open"></span>

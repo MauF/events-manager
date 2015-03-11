@@ -26,9 +26,6 @@
                   <i class="fa fa-bars fa-2x"></i>
               </md-button>
           </div>
-          <div data-ng-show="loadingInProgress" layout layout-align="start center" style="padding-left: 10px; overflow: hidden;">
-            <i class="fa fa-spinner fa-pulse fa-3x"></i>
-          </div>
           <div layout layout-align="center center" flex>
             <h3>&nbsp;{{app.title}}</h3>
           </div>
@@ -44,7 +41,10 @@
     </md-toolbar>
     <md-content layout="row" flex class="body-background">
         <div layout="column" flex id="content" class="body-background">
-            <div layout="column" layout-align="center" flex class="body-background md-padding view-padding" style="overflow-x: hidden;" data-ng-view></div>
+            <div data-ng-show="loadingInProgress" layout layout-align="center center" flex style="overflow: hidden;">
+              <i class="fa fa-spinner fa-pulse fa-3x"></i>
+            </div>
+            <div data-ng-hide="loadingInProgress" layout="column" layout-align="center" flex class="body-background md-padding view-padding" style="overflow-x: hidden;" data-ng-view></div>
         </div>
     </md-content>
 </body>
