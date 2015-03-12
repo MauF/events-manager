@@ -76,6 +76,21 @@ controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$lo
         $log.info(angular.toJson(eventType, true));
     });
 
+    this.logout = function() {
+        Auth.$unauth();
+        this.goTo("login");
+    };
+
+    this.goTo = function(route) {
+        if(route) {
+            $location.path("/"+route);
+        }
+    };
+
+    this.isLocation = function(path) {
+        return '/' + path == $location.path();
+    };
+
 }]).
 controller('BottomSheetController', ['Auth', '$scope', '$mdBottomSheet', '$log', '$location', function(Auth,$scope, $mdBottomSheet, $log, $location) {
     $scope.logout = function() {
@@ -147,6 +162,7 @@ controller('EventController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '
     this.createOrUpdateEvent = function(dataEvent) {
         var savedEvent = undefined;
         var msg = undefined;
+        var goOn = true;
         if(this.saveBtnLabel == 'save') {
             savedEvent = eventsApi.addEvent(dataEvent);
             msg='saved';
@@ -154,9 +170,11 @@ controller('EventController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '
             savedEvent = eventsApi.saveEvent(dataEvent);
             msg='edited';
         }
-        $log.info("Event "+msg+"!", angular.toJson(dataEvent, true));
-        eventsApi.showToast("Event '"+dataEvent.what+"' " + msg +" !");
-        $location.path("/event-list");
+        if(goOn) {
+            $log.info("Event "+msg+"!", angular.toJson(dataEvent, true));
+            eventsApi.showToast("Event '"+dataEvent.what+"' " + msg +" !");
+            $location.path("/event-list");
+        }
     };
 
     this.resetOrDeleteEvent = function(event, ev) {
@@ -236,7 +254,7 @@ controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$loc
     };
 
     this.isAttendeesBtnVisible = function(event) {
-        return mapLength(event.attendees) > 0;
+        return this.mapLength(event.attendees) > 0;
     };
 
     this.isTheUserInTheWaitingList = function(event) {
@@ -259,7 +277,7 @@ controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$loc
     };
 
 
-    var mapLength = function(obj) {
+    this.mapLength = function(obj) {
         return eventsApi.mapLength(obj);
     };
 
@@ -267,13 +285,13 @@ controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$loc
         if(!event.attendees) {
             return false;
         } else {
-            var placeLeft = event.limitTo - mapLength(event.attendees);
+            var placeLeft = event.limitTo - this.mapLength(event.attendees);
             return placeLeft == 0;
         }
     };
 
     this.calculatePlaceLeft = function(event) {
-        return event.limitTo - mapLength(event.attendees);
+        return event.limitTo - this.mapLength(event.attendees);
     };
 
     this.showAttendees = function(event, ev) {

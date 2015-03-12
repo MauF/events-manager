@@ -19,7 +19,7 @@
             <a layout layout-align="center" flex href="#/event/new">&nbsp;Click here to create a event...</a>
         </label>
         <md-list data-ng-show="eventList.events.length > 0">
-            <md-item ng-repeat="event in eventList.events | filter: eventList.filter" layout-align="center center">
+            <md-item ng-repeat="event in eventList.events | removeOldEvent | filter: eventList.filter" layout-align="center center">
                 <md-item-content layout="row" layout-sm="column" layout-md="column" flex>
                     <div layout="column" layout-align="center center" flex class="md-tile-content">
                         <div class="list-group" style="width: 100%;" >
@@ -49,27 +49,28 @@
                     <div layout flex layout-align="center center">
                         <md-button class="md-raised md-primary margin-right-10" data-ng-show="eventList.isEditBtnVisible(event)" data-ng-click="eventList.edit(event)">
                             <span class="glyphicon glyphicon-edit"></span>
-                            <span hide-sm>edit</span>
+                            <span>edit</span>
                         </md-button>
                         <md-button class="md-raised md-primary margin-right-10" 
                         data-ng-click="eventList.partecipate(event, eventList.isTheAttendeesListFull(event))" 
                         data-ng-show="eventList.isJoinBtnVisible(event)">
                             <span class="glyphicon glyphicon-ok"></span>
-                            <span hide-sm>join <span data-ng-show="eventList.isTheAttendeesListFull(event)">the waiting list</span></span>
+                            <span>join <span data-ng-show="eventList.isTheAttendeesListFull(event)">the waiting list</span></span>
                         </md-button>
                         <md-button class="md-raised md-warn margin-right-10" 
                         data-ng-click="eventList.left(event, eventList.isTheAttendeesListFull(event))"
                         data-ng-show="eventList.isLeftBtnVisible(event)">
                             <span class="glyphicon glyphicon-remove"></span>
-                            <span hide-sm>left <span data-ng-show="eventList.isTheUserInTheWaitingList(event)">the waiting list</span></span>
+                            <span>left <span data-ng-show="eventList.isTheUserInTheWaitingList(event)">the waiting list</span></span>
                         </md-button>
                         <md-button class="md-raised md-accent margin-right-10" data-ng-show="eventList.isAttendeesBtnVisible(event)" data-ng-click="eventList.showAttendees(event, $event)">
                             <span class="glyphicon glyphicon-eye-open"></span>
-                            <span hide-sm>attendees</span>
+                            <span>attendees</span>
+                            <span >{{eventList.mapLength(event.attendees)}} {{eventList.mapLength(event.waitingList) > 0 ? ' | ' + eventList.mapLength(event.waitingList) : ''}}</span>
                         </md-button>
                         <md-button class="md-raised md-primary" data-ng-show="false">
                             <span class="glyphicon glyphicon-comment"></span>
-                            <span hide-sm>chat</span>
+                            <span>chat</span>
                         </md-button>
                     </div>
                 </md-item-content>

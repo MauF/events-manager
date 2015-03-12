@@ -18,7 +18,23 @@
         <div layout="row" flex>
           <div layout flex layout-align="start center" style="padding-left: 10px;" data-ng-show="app.userLoggedIn.name">
               <md-button class="md-fab md-primary md-hue-1" data-ng-click="app.showGridBottomSheet($event)" aria-label="">
-                  <i class="fa fa-bars fa-2x"></i>
+                <i class="fa fa-bars fa-2x"></i>
+                <md-tooltip>
+                    show menu
+                </md-tooltip>
+              </md-button>
+              &nbsp;
+              <md-button class="md-fab md-primary md-hue-2" aria-label="create new event" data-ng-show="app.isLocation('event-list')" data-ng-click="app.goTo('event/new')">
+                <i class="fa fa-calendar fa-2x"></i>
+                <md-tooltip>
+                    create new event
+                </md-tooltip>
+              </md-button>
+              <md-button class="md-fab md-primary md-hue-2" aria-label="show event-list" data-ng-show="app.isLocation('event/new')" data-ng-click="app.goTo('event-list')">
+                <i class="fa fa-list-alt fa-2x"></i>
+                <md-tooltip>
+                    show event-list
+                </md-tooltip>
               </md-button>
           </div>
           <div layout layout-align="center center" flex>
@@ -31,6 +47,10 @@
                 <span hide-sm hide-md style="font-size: 0.8em;">&nbsp; {{app.userLoggedIn.name}}</span>
               </span>
             </a>
+            &nbsp;
+            <md-button class="md-fab md-warn" aria-label="sign-out" data-ng-click="app.logout()">
+              <i class="fa fa-sign-out fa-2x"></i>
+            </md-button>
           </div>
         </div>
     </md-toolbar>

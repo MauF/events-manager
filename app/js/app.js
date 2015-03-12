@@ -5,7 +5,8 @@ angular.module('app', [
     'ngRoute',
     'ngMaterial',
     'app-controllers',
-    'app-factories'
+    'app-factories',
+    'app-filters',
 ]).
 config(['$mdThemingProvider', function($mdThemingProvider) {
   // $mdThemingProvider.theme('default')
