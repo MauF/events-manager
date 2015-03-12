@@ -216,7 +216,7 @@ controller('EventController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '
     
 
 }]).
-controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', 'events-api', function($log, $mdSidenav, $mdBottomSheet, $location, $mdDialog, eventsApi) {
+controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', 'events-api', '$filter', function($log, $mdSidenav, $mdBottomSheet, $location, $mdDialog, eventsApi, $filter) {
     var that = this;
 
     that.showEvents = false;
@@ -346,6 +346,11 @@ controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$loc
 
     this.edit = function(event) {
         $location.path("/event/"+event.$id);
+    };
+
+    this.getVisibleEvents = function(events) {
+        var filteredEvents = $filter('removeOldEvent')(events);
+        return this.mapLength(filteredEvents);
     };
 
 }]).

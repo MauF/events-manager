@@ -14,7 +14,7 @@
         <label data-ng-hide="eventList.showEvents" class="md-padding" layout layout-sm="column" flex layout-align="center">
             <span layout layout-align="center" flex >Loading...</span>
         </label>
-        <label data-ng-show="eventList.showEvents && eventList.events.length == 0" class="md-padding" layout layout-sm="column" flex layout-align="center">
+        <label data-ng-show="eventList.showEvents && eventList.getVisibleEvents(eventList.events) == 0" class="md-padding" layout layout-sm="column" flex layout-align="center">
             <span layout layout-align="center" flex >There is no events available!</span>
             <a layout layout-align="center" flex href="#/event/new">&nbsp;Click here to create a event...</a>
         </label>
@@ -49,7 +49,7 @@
                     <div layout flex layout-align="center center">
                         <md-button class="md-raised md-primary margin-right-10" data-ng-show="eventList.isEditBtnVisible(event)" data-ng-click="eventList.edit(event)">
                             <span class="glyphicon glyphicon-edit"></span>
-                            <span>edit</span>
+                            <span hide-sm>edit</span>
                         </md-button>
                         <md-button class="md-raised md-primary margin-right-10" 
                         data-ng-click="eventList.partecipate(event, eventList.isTheAttendeesListFull(event))" 
@@ -65,7 +65,7 @@
                         </md-button>
                         <md-button class="md-raised md-accent margin-right-10" data-ng-show="eventList.isAttendeesBtnVisible(event)" data-ng-click="eventList.showAttendees(event, $event)">
                             <span class="glyphicon glyphicon-eye-open"></span>
-                            <span>attendees</span>
+                            <span hide-sm>attendees</span>
                             <span >{{eventList.mapLength(event.attendees)}} {{eventList.mapLength(event.waitingList) > 0 ? ' | ' + eventList.mapLength(event.waitingList) : ''}}</span>
                         </md-button>
                         <md-button class="md-raised md-primary" data-ng-show="false">
