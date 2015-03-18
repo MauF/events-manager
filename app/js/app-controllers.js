@@ -36,7 +36,7 @@ controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$lo
                 that.userLoggedIn.url = authData.facebook.cachedUserProfile.link;
             }
             that.userLoggedIn.uid = authData.uid;
-            $location.path("/event-list");
+            $location.path($location.path());
             eventsApi.showToast("Welcome " + that.userLoggedIn.name +" !");
         } else {
             $log.info("authentication required!!");
@@ -44,6 +44,7 @@ controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$lo
             that.userLoggedIn.img = undefined;
             that.userLoggedIn.url = undefined;
             that.userLoggedIn.uid = undefined;
+            $location.path("/login");
         }
 
         
