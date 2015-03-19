@@ -19,64 +19,7 @@
             <a layout layout-align="center" flex href="#/event/new">&nbsp;Click here to create a event...</a>
         </label>
         <md-list data-ng-show="eventList.events.length > 0">
-            <md-item ng-repeat="event in eventList.events | removeOldEvent | filter: eventList.filter" layout-align="center center">
-                <md-item-content layout="row" layout-sm="column" layout-md="column" flex>
-                    <div layout="column" layout-align="center center" flex class="md-tile-content">
-                        <div class="list-group" style="width: 100%;" >
-                            <span class="list-group-item" style="text-align: center;">
-                                <i class="glyphicon glyphicon-circle-arrow-right"></i>&nbsp; {{event.what}}
-                            </span>
-                            <a class="list-group-item" href="{{event.organizer.url}}" target="_blank" style="text-align: center;">
-                                <img data-ng-src="{{event.organizer.img}}" style="width: 18px; height: 18px; border-radius: 50%;"/>&nbsp;{{event.organizer.name}}
-                            </a>
-                            <span class="list-group-item" style="text-align: center;">
-                                <i class="glyphicon glyphicon-calendar"></i>&nbsp; {{event.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}
-                            </span>
-                            <a class="list-group-item" href="{{event.whereDetails.url}}" target="_blank" style="text-align: center;">
-                                <i class="glyphicon glyphicon-map-marker"></i>&nbsp; {{event.where}}
-                            </a>
-                            <span class="list-group-item">
-                                <p>Description: {{event.description}}</p>
-                            </span>
-                            <span layout class="list-group-item">
-                                <span flex layout layout-align="start" style="font-size: 0.9em; color: {{eventList.isTheUserInTheWaitingList(event)?'orange':'green'}}"> {{eventList.writeStatus(event)}} </span>
-                                <span flex layout layout-align="end"> place left: <bold>{{eventList.calculatePlaceLeft(event)}}</bold> </span>
-                            </span>
-                        </div>
-                    </div>
-                </md-item-content>
-                <md-item-content layout="row" layout-sm="column" layout-md="column">
-                    <div layout flex layout-align="center center">
-                        <md-button class="md-raised md-primary margin-right-10" data-ng-show="eventList.isEditBtnVisible(event)" data-ng-click="eventList.edit(event)">
-                            <span class="glyphicon glyphicon-edit"></span>
-                            <span hide-sm>edit</span>
-                        </md-button>
-                        <md-button class="md-raised md-primary margin-right-10" 
-                        data-ng-click="eventList.partecipate(event, eventList.isTheAttendeesListFull(event))" 
-                        data-ng-show="eventList.isJoinBtnVisible(event)">
-                            <span class="glyphicon glyphicon-ok"></span>
-                            <span>join <span data-ng-show="eventList.isTheAttendeesListFull(event)">the waiting list</span></span>
-                        </md-button>
-                        <md-button class="md-raised md-warn margin-right-10" 
-                        data-ng-click="eventList.left(event, eventList.isTheAttendeesListFull(event))"
-                        data-ng-show="eventList.isLeftBtnVisible(event)">
-                            <span class="glyphicon glyphicon-remove"></span>
-                            <span>left <span data-ng-show="eventList.isTheUserInTheWaitingList(event)">the waiting list</span></span>
-                        </md-button>
-                        <md-button class="md-raised md-accent margin-right-10" data-ng-show="eventList.isAttendeesBtnVisible(event)" data-ng-click="eventList.showAttendees(event, $event)">
-                            <span class="glyphicon glyphicon-eye-open"></span>
-                            <span hide-sm>attendees</span>
-                            <span >{{eventList.mapLength(event.attendees)}} {{eventList.mapLength(event.waitingList) > 0 ? ' | ' + eventList.mapLength(event.waitingList) : ''}}</span>
-                        </md-button>
-                        <md-button class="md-raised md-primary" data-ng-show="false">
-                            <span class="glyphicon glyphicon-comment"></span>
-                            <span>chat</span>
-                        </md-button>
-                    </div>
-                </md-item-content>
-                <hr data-ng-hide="$index == eventList.events.length -1 "/>
-                <!-- <pre>{{event|json:true}}</pre> -->
-            </md-item>
+            <event data-ng-repeat="event in eventList.events | removeOldEvent | filter: eventList.filter" event-obj="event" show-btns="false"></event>
         </md-list>
     </md-content>
 </div>

@@ -10,7 +10,7 @@ angular.module('app-controllers', [
     'ngAutocomplete',
     'ngMap'
 ]).
-controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$location', '$filter', '$mdDialog', '$sce', 'events-api', function(Auth, $log, $mdSidenav, $mdBottomSheet, $location, $filter, $mdDialog, $sce, eventsApi) {
+controller('AppController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '$location', '$filter', '$mdDialog', '$sce', 'events-api', '$rootScope', function(Auth, $log, $mdSidenav, $mdBottomSheet, $location, $filter, $mdDialog, $sce, eventsApi, $rootScope) {
     var that = this;
 
     this.title = "Event Planner";
@@ -21,36 +21,62 @@ controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$lo
 
     this.userLoggedIn = {};
 
-    this.auth.$onAuth(function(authData) {
-        
-        if(authData) {
-            that.authData = authData;
-            $log.info("logged in!!", angular.toJson(authData, true));
-            if(authData.google) {
-                that.userLoggedIn.name = authData.google.displayName;
-                that.userLoggedIn.img = authData.google.cachedUserProfile.picture;
-                that.userLoggedIn.url = authData.google.cachedUserProfile.link;
-            } else if(authData.facebook) {
-                that.userLoggedIn.name = authData.facebook.displayName;
-                that.userLoggedIn.img = authData.facebook.cachedUserProfile.picture.data.url;
-                that.userLoggedIn.url = authData.facebook.cachedUserProfile.link;
-            }
-            that.userLoggedIn.uid = authData.uid;
-            $location.path($location.path());
-            eventsApi.showToast("Welcome " + that.userLoggedIn.name +" !");
-        } else {
-            $log.info("authentication required!!");
-            that.userLoggedIn.name = undefined;
-            that.userLoggedIn.img = undefined;
-            that.userLoggedIn.url = undefined;
-            that.userLoggedIn.uid = undefined;
-            $location.path("/login");
+    $rootScope.$on('authenticationSucced', function(event, authData) {
+        that.authData = authData;
+        $log.info("logged in!!", angular.toJson(authData, true));
+        if (authData.google) {
+            that.userLoggedIn.name = authData.google.displayName;
+            that.userLoggedIn.img = authData.google.cachedUserProfile.picture;
+            that.userLoggedIn.url = authData.google.cachedUserProfile.link;
+        } else if (authData.facebook) {
+            that.userLoggedIn.name = authData.facebook.displayName;
+            that.userLoggedIn.img = authData.facebook.cachedUserProfile.picture.data.url;
+            that.userLoggedIn.url = authData.facebook.cachedUserProfile.link;
         }
-
-        
+        that.userLoggedIn.uid = authData.uid;
         eventsApi.setUserLoggedIn(that.userLoggedIn);
-
     });
+
+    $rootScope.$on('authenticationFailed', function(event) {
+        $log.info("authentication required!!");
+        that.userLoggedIn.name = undefined;
+        that.userLoggedIn.img = undefined;
+        that.userLoggedIn.url = undefined;
+        that.userLoggedIn.uid = undefined;
+        $location.path("/login");
+        eventsApi.setUserLoggedIn(that.userLoggedIn);
+    });
+
+    // this.auth.$onAuth(function(authData) {
+
+    //     if (authData) {
+    //         that.authData = authData;
+    //         $log.info("logged in!!", angular.toJson(authData, true));
+    //         if (authData.google) {
+    //             that.userLoggedIn.name = authData.google.displayName;
+    //             that.userLoggedIn.img = authData.google.cachedUserProfile.picture;
+    //             that.userLoggedIn.url = authData.google.cachedUserProfile.link;
+    //         } else if (authData.facebook) {
+    //             that.userLoggedIn.name = authData.facebook.displayName;
+    //             that.userLoggedIn.img = authData.facebook.cachedUserProfile.picture.data.url;
+    //             that.userLoggedIn.url = authData.facebook.cachedUserProfile.link;
+    //         }
+    //         that.userLoggedIn.uid = authData.uid;
+    //         $location.path($location.path());
+    //         eventsApi.showToast("Welcome " + that.userLoggedIn.name + " !");
+    //     } else {
+    //         $log.info("authentication required!!");
+    //         that.userLoggedIn.name = undefined;
+    //         that.userLoggedIn.img = undefined;
+    //         that.userLoggedIn.url = undefined;
+    //         that.userLoggedIn.uid = undefined;
+    //         $location.path("/login");
+    //     }
+
+
+    //     eventsApi.setUserLoggedIn(that.userLoggedIn);
+
+    // });
 
     var dateFormat = "EEEE, MMMM d, y h:mm:ss a";
 
@@ -59,17 +85,17 @@ controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$lo
     };
 
     this.toggleMenu = function() {
-    $mdSidenav('menu').toggle()
-        .then(function(){
-            $log.debug("toggle Menu is done");
-        });
+        $mdSidenav('menu').toggle()
+            .then(function() {
+                $log.debug("toggle Menu is done");
+            });
     };
 
     this.showGridBottomSheet = function($event) {
         $mdBottomSheet.show({
-          templateUrl: 'partials/buttons-grid.html',
-          controller: 'BottomSheetController',
-          targetEvent: $event
+            templateUrl: 'partials/buttons-grid.html',
+            controller: 'BottomSheetController',
+            targetEvent: $event
         });
     };
 
@@ -83,8 +109,8 @@ controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$lo
     };
 
     this.goTo = function(route) {
-        if(route) {
-            $location.path("/"+route);
+        if (route) {
+            $location.path("/" + route);
         }
     };
 
@@ -93,7 +119,7 @@ controller('AppController', ['Auth','$log', '$mdSidenav', '$mdBottomSheet', '$lo
     };
 
 }]).
-controller('BottomSheetController', ['Auth', '$scope', '$mdBottomSheet', '$log', '$location', function(Auth,$scope, $mdBottomSheet, $log, $location) {
+controller('BottomSheetController', ['Auth', '$scope', '$mdBottomSheet', '$log', '$location', function(Auth, $scope, $mdBottomSheet, $log, $location) {
     $scope.logout = function() {
         $mdBottomSheet.hide();
         Auth.$unauth();
@@ -101,9 +127,9 @@ controller('BottomSheetController', ['Auth', '$scope', '$mdBottomSheet', '$log',
     };
 
     $scope.goTo = function(route) {
-        if(route) {
+        if (route) {
             $mdBottomSheet.hide();
-            $location.path("/"+route);
+            $location.path("/" + route);
         }
     };
 
@@ -112,7 +138,7 @@ controller('BottomSheetController', ['Auth', '$scope', '$mdBottomSheet', '$log',
     };
 }]).
 controller('EventController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', 'events-api', '$routeParams', function(Auth, $log, $mdSidenav, $mdBottomSheet, $location, $mdDialog, eventsApi, $routeParams) {
-    
+
     var that = this;
 
     this.params = $routeParams;
@@ -121,16 +147,22 @@ controller('EventController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '
     this.saveBtnLabel = 'save';
     this.resetBtnLabel = 'reset';
 
-    if(this.params.id != 'new') {
-        var eventRetrived = eventsApi.getEvent(this.params.id);
-        if(eventRetrived == null) {
-            $location.path("/event-list");
-        } else {
-            this.data = eventRetrived;
-            this.title = 'Edit Event \'' + this.data.what+'\'';
-            this.saveBtnLabel = 'edit';
-            this.resetBtnLabel = 'delete';
-        }
+    if (this.params.id != 'new') {
+        eventsApi.getAll().$loaded()
+            .then(function(data) {
+                var eventRetrived = eventsApi.getEvent(that.params.id);
+                if (eventRetrived == null) {
+                    $location.path("/event-list");
+                } else {
+                    that.data = eventRetrived;
+                    that.title = 'Edit Event \'' + that.data.what + '\'';
+                    that.saveBtnLabel = 'edit';
+                    that.resetBtnLabel = 'delete';
+                }
+            })
+            .catch(function(error) {
+                $log.error("Error:", error);
+            });
     } else {
         this.data = {};
         this.data.limitTo = 18;
@@ -164,32 +196,32 @@ controller('EventController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '
         var savedEvent = undefined;
         var msg = undefined;
         var goOn = true;
-        if(this.saveBtnLabel == 'save') {
+        if (this.saveBtnLabel == 'save') {
             savedEvent = eventsApi.addEvent(dataEvent);
-            msg='saved';
+            msg = 'saved';
         } else {
             savedEvent = eventsApi.saveEvent(dataEvent);
-            msg='edited';
+            msg = 'edited';
         }
-        if(goOn) {
-            $log.info("Event "+msg+"!", angular.toJson(dataEvent, true));
-            eventsApi.showToast("Event '"+dataEvent.what+"' " + msg +" !");
+        if (goOn) {
+            $log.info("Event " + msg + "!", angular.toJson(dataEvent, true));
+            eventsApi.showToast("Event '" + dataEvent.what + "' " + msg + " !");
             $location.path("/event-list");
         }
     };
 
     this.resetOrDeleteEvent = function(event, ev) {
-        if(this.resetBtnLabel == 'delete') {
+        if (this.resetBtnLabel == 'delete') {
             var confirm = $mdDialog.confirm()
-                .title('Are you sure you want to delete the event \''+event.what+'\'?')
+                .title('Are you sure you want to delete the event \'' + event.what + '\'?')
                 .ok('Please do it!')
                 .cancel('No thanks!')
                 .targetEvent(ev);
             $mdDialog.show(confirm).then(function() {
-                  eventsApi.deleteEvent(event);
-                  $location.path("/event-list");
+                eventsApi.deleteEvent(event);
+                $location.path("/event-list");
             }, function() {
-                  $log.info("deleteEvent cancel!");
+                $log.info("deleteEvent cancel!");
             });
         } else {
             this.data = {};
@@ -202,19 +234,19 @@ controller('EventController', ['Auth', '$log', '$mdSidenav', '$mdBottomSheet', '
 
     function deleteEvent(event, ev) {
         var confirm = $mdDialog.confirm()
-            .title('Are you sure you want to delete the event \''+event.what+'\'?')
+            .title('Are you sure you want to delete the event \'' + event.what + '\'?')
             .ok('Please do it!')
             .cancel('No thanks!')
             .targetEvent(ev);
         $mdDialog.show(confirm).then(function() {
-              eventsApi.deleteEvent(event.$id);
-              eventsApi.showToast("Event '"+event.what+"' deleted!");
+            eventsApi.deleteEvent(event.$id);
+            eventsApi.showToast("Event '" + event.what + "' deleted!");
         }, function() {
-              $log.info("deleteEvent cancel!");
+            $log.info("deleteEvent cancel!");
         });
     };
 
-    
+
 
 }]).
 controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', 'events-api', '$filter', function($log, $mdSidenav, $mdBottomSheet, $location, $mdDialog, eventsApi, $filter) {
@@ -225,139 +257,51 @@ controller('EventListController', ['$log', '$mdSidenav', '$mdBottomSheet', '$loc
 
 
     this.events.$loaded()
-    .then(function(data) {
-        that.showEvents = true;
-        $log.info("events loaded!");
-    })
-    .catch(function(error) {
-        $log.error("Error:", error);
-    });
-
-    this.openMap = function(whereDetails) {
-        $location.path('/map/'+whereDetails.geometry.location.k+'/'+whereDetails.geometry.location.D+'/'+whereDetails.formatted_address);
-    };
-
-    this.isEditBtnVisible = function(event) {
-        return event.organizer.uid == eventsApi.getUserLoggedIn().uid;
-    };
-
-    this.isJoinBtnVisible = function(event) {
-        return !that.isLeftBtnVisible(event);
-    };
-
-    this.isLeftBtnVisible = function(event) {
-        var userLoggedIn = eventsApi.getUserLoggedIn();
-        return (event.attendees && event.attendees[userLoggedIn.uid]) || (event.waitingList && event.waitingList[userLoggedIn.uid]);
-    };
-
-    this.isLeftWaitingListBtnVisible = function(event) {
-        return event.organizer.uid == eventsApi.getUserLoggedIn().uid;
-    };
-
-    this.isAttendeesBtnVisible = function(event) {
-        return this.mapLength(event.attendees) > 0;
-    };
-
-    this.isTheUserInTheWaitingList = function(event) {
-        var userLoggedIn = eventsApi.getUserLoggedIn();
-        if(!event.waitingList) {
-            return false;
-        }
-        return event.waitingList[userLoggedIn.uid];
-    };
-
-    this.writeStatus = function(event) {
-        var userLoggedIn = eventsApi.getUserLoggedIn();
-        if(event.attendees && event.attendees[userLoggedIn.uid]) {
-            return "You are in the attendees list!";
-        }
-        if(event.waitingList && event.waitingList[userLoggedIn.uid]) {
-            return "You are in the waiting list!";
-        }
-        return "";
-    };
-
-
-    this.mapLength = function(obj) {
-        return eventsApi.mapLength(obj);
-    };
-
-    this.isTheAttendeesListFull = function(event) {
-        if(!event.attendees) {
-            return false;
-        } else {
-            var placeLeft = event.limitTo - this.mapLength(event.attendees);
-            return placeLeft == 0;
-        }
-    };
-
-    this.calculatePlaceLeft = function(event) {
-        return event.limitTo - this.mapLength(event.attendees);
-    };
-
-    this.showAttendees = function(event, ev) {
-        $mdDialog.show({
-            controller: ['$scope', '$mdDialog', 'attendees', 'waitingList', function($scope, $mdDialog, attendees, waitingList) {
-                $scope.ok = function() {
-                    $mdDialog.hide();
-                };
-                $scope.attendees = [];
-                for (var attendee in attendees) {
-                    $scope.attendees.push(attendees[attendee]);
-                }
-                $scope.waitingList = [];
-                for (var attendee in waitingList) {
-                    $scope.waitingList.push(waitingList[attendee]);
-                }
-            }],
-            templateUrl: 'partials/show-attendees.html',
-            targetEvent: ev,
-            resolve: {
-                attendees: function(){
-                    return event.attendees;
-                },
-                waitingList: function(){
-                    return event.waitingList;
-                }
-            }
-        }).then(function() {
-            $log.info("showAttendees closed!");
-        }, function() {
-            $log.info("You cancelled the dialog.");
+        .then(function(data) {
+            that.showEvents = true;
+            $log.info("events loaded!");
+        })
+        .catch(function(error) {
+            $log.error("Error:", error);
         });
-    };
 
-    this.partecipate = function(event, isWaitingList) {
-        eventsApi.partecipate(event, isWaitingList);
-        if(isWaitingList) {
-            eventsApi.showToast("You are in the waiting-list of the '"+event.what+"' event!");
-        } else {
-            eventsApi.showToast("You will partecipate at the '"+event.what+"' event!");
-        }
-    };
+}]).
+controller('EventDetailsController', ['$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', 'events-api', '$filter', '$routeParams', function($log, $mdSidenav, $mdBottomSheet, $location, $mdDialog, eventsApi, $filter, $routeParams) {
+    var that = this;
 
-    this.left = function(event, isWaitingList) {
-        eventsApi.left(event, isWaitingList);
-        if(isWaitingList) {
-            eventsApi.showToast("You left the waiting-list of the '"+event.what+"' event!");
-        } else {
-            eventsApi.showToast("You won't partecipate at the '"+event.what+"' event!");
-        }
-    };
+    this.params = $routeParams;
 
-    this.edit = function(event) {
-        $location.path("/event/"+event.$id);
-    };
+    this.saveBtnLabel = 'save';
+    this.resetBtnLabel = 'reset';
 
-    this.getVisibleEvents = function(events) {
-        var filteredEvents = $filter('removeOldEvent')(events);
-        return this.mapLength(filteredEvents);
-    };
-
+    if (this.params.id) {
+        eventsApi.getAll().$loaded()
+            .then(function(data) {
+                var eventRetrived = eventsApi.getEvent(that.params.id);
+                that.event = eventRetrived;
+                that.title = eventRetrived.what;
+            })
+            .catch(function(error) {
+                $log.error("Error:", error);
+            });
+    }
 }]).
 controller('MapController', ['$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', '$routeParams', function($log, $mdSidenav, $mdBottomSheet, $location, $mdDialog, $routeParams) {
     this.params = $routeParams;
 }]).
-controller('LoginController', ['$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', function($log, $mdSidenav, $mdBottomSheet, $location, $mdDialog) {
+controller('LoginController', ['login-util', '$log', '$mdSidenav', '$mdBottomSheet', '$location', '$mdDialog', 'Auth', function(loginUtil, $log, $mdSidenav, $mdBottomSheet, $location, $mdDialog, Auth) {
+
+    this.auth = function(authProvider) {
+        Auth.$authWithOAuthPopup(authProvider).then(function(authData) {
+            if (loginUtil.getRedirect()) {
+                $location.path(loginUtil.getRedirect());
+            } else {
+                $location.path('/event-list');
+            }
+        }).catch(function(error) {
+            $log.error("Authentication failed:", error);
+        });
+    };
+
 
 }]);

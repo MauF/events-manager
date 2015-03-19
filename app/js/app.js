@@ -7,21 +7,33 @@ angular.module('app', [
     'app-controllers',
     'app-factories',
     'app-filters',
+    'app-directives'
 ]).
 config(['$mdThemingProvider', function($mdThemingProvider) {
   // $mdThemingProvider.theme('default')
   //   .primaryPalette('blue')
   //   .warnPalette('indigo')
   //   .accentPalette('blue-grey');
-}]).
-run(["$rootScope", "$location", function($rootScope, $location) {
+}])
+.run(["$rootScope", "$location", "$log", "Auth", "login-util", function($rootScope, $location, $log, Auth, loginUtil) {
     $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
       // We can catch the error thrown when the $requireAuth promise is rejected
       // and redirect the user back to the home page
       if (error === "AUTH_REQUIRED") {
+        $log.info("authentication required!!");
+        loginUtil.setRedirect($location.path());
         $location.path("/login");
       }
     });
+
+    Auth.$onAuth(function(authData) {
+        if (authData) {
+            $rootScope.$broadcast('authenticationSucced', authData);
+        } else {
+            $rootScope.$broadcast('authenticationFailed');
+        }
+    });
+
 }])
 .config(['$routeProvider', function($routeProvider) {
     $routeProvider.otherwise({
@@ -32,6 +44,13 @@ run(["$rootScope", "$location", function($rootScope, $location) {
         resolve: {
             "currentAuth": ["Auth", function(Auth) {
                 return Auth.$waitForAuth();
+        }]}
+    });
+    $routeProvider.when('/event-details/:id', {
+        templateUrl: 'partials/event-details.html',
+        resolve: {
+            "currentAuth": ["Auth", function(Auth) {
+                return Auth.$requireAuth();
         }]}
     });
     $routeProvider.when('/event/:id', {

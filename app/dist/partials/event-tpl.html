@@ -1,0 +1,52 @@
+<md-item layout-align="center center">
+    <md-item-content layout="row" layout-sm="column" layout-md="column" flex>
+        <div layout="column" layout-align="center center" flex class="md-tile-content">
+            <div class="list-group" style="width: 100%;">
+                <a data-ng-href="#/event-details/{{eventObj.$id}}" class="list-group-item" style="text-align: center; background-color: #B2B2CC;">
+                                <i class="glyphicon glyphicon-circle-arrow-right"></i>&nbsp; {{eventObj.what}}
+                </a>
+                <a class="list-group-item" href="{{eventObj.organizer.url}}" target="_blank" style="text-align: center;">
+                    <img data-ng-src="{{eventObj.organizer.img}}" style="width: 18px; height: 18px; border-radius: 50%;" />&nbsp;{{eventObj.organizer.name}}
+                </a>
+                <span class="list-group-item" style="text-align: center;">
+                                <i class="glyphicon glyphicon-calendar"></i>&nbsp; {{eventObj.when | date : 'EEEE, MMMM d, y h:mm:ss a'}}
+                            </span>
+                <a class="list-group-item" href="{{eventObj.whereDetails.url}}" target="_blank" style="text-align: center;">
+                    <i class="glyphicon glyphicon-map-marker"></i>&nbsp; {{eventObj.where}}
+                </a>
+                <span class="list-group-item">
+                                <p>Description: {{eventObj.description}}</p>
+                            </span>
+                <span layout class="list-group-item">
+                                <span flex layout layout-align="start" style="font-size: 0.9em; color: {{eventCtrl.isTheUserInTheWaitingList(eventObj)?'orange':'green'}}"> {{eventCtrl.writeStatus(eventObj)}} </span>
+                <span flex layout layout-align="end"> place left: <bold>{{eventCtrl.calculatePlaceLeft(eventObj)}}</bold> </span>
+                </span>
+            </div>
+        </div>
+    </md-item-content>
+    <md-item-content layout="row" layout-sm="column" layout-md="column" data-ng-show="showBtns">
+        <div layout flex layout-align="center center">
+            <md-button class="md-raised md-primary margin-right-10" data-ng-show="eventCtrl.isEditBtnVisible(eventObj)" data-ng-click="eventCtrl.edit(eventObj)">
+                <span class="glyphicon glyphicon-edit"></span>
+                <span hide-sm>edit</span>
+            </md-button>
+            <md-button class="md-raised md-primary margin-right-10" data-ng-click="eventCtrl.partecipate(eventObj, eventCtrl.isTheAttendeesListFull(eventObj))" data-ng-show="eventCtrl.isJoinBtnVisible(eventObj)">
+                <span class="glyphicon glyphicon-ok"></span>
+                <span>join <span data-ng-show="eventCtrl.isTheAttendeesListFull(eventObj)">the waiting list</span></span>
+            </md-button>
+            <md-button class="md-raised md-warn margin-right-10" data-ng-click="eventCtrl.left(eventObj, eventCtrl.isTheAttendeesListFull(eventObj))" data-ng-show="eventCtrl.isLeftBtnVisible(eventObj)">
+                <span class="glyphicon glyphicon-remove"></span>
+                <span>left <span data-ng-show="eventCtrl.isTheUserInTheWaitingList(eventObj)">the waiting list</span></span>
+            </md-button>
+            <md-button class="md-raised md-accent margin-right-10" data-ng-show="eventCtrl.isAttendeesBtnVisible(eventObj)" data-ng-click="eventCtrl.showAttendees(eventObj, $event)">
+                <span class="glyphicon glyphicon-eye-open"></span>
+                <span hide-sm>attendees</span>
+                <span>{{eventCtrl.mapLength(eventObj.attendees)}} {{eventCtrl.mapLength(eventObj.waitingList) > 0 ? ' | ' + eventCtrl.mapLength(eventObj.waitingList) : ''}}</span>
+            </md-button>
+            <md-button class="md-raised md-primary" data-ng-show="false">
+                <span class="glyphicon glyphicon-comment"></span>
+                <span>chat</span>
+            </md-button>
+        </div>
+    </md-item-content>
+</md-item>

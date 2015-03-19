@@ -7,13 +7,13 @@
 	</md-toolbar>
 	<md-content class="md-whiteframe-z1 md-padding">
 		<section layout="column" layout-align="center center">
-		    <md-button aria-label="facebook" class="md-raised md-primary" style="width: 100%;" data-ng-click="app.auth.$authWithOAuthPopup('facebook')">
+		    <md-button aria-label="facebook" class="md-raised md-primary" style="width: 100%;" data-ng-click="login.auth('facebook')">
 		    	<i class="fa fa-facebook-official fa-3x"></i>
 		    </md-button>
 		</section>
 		<h3 layout layout-align="center center" >or</h3>
 		<section layout="column" layout-align="center center">
-		    <md-button aria-label="google+" class="md-raised md-warn" style="width: 100%;" data-ng-click="app.auth.$authWithOAuthPopup('google')">
+		    <md-button aria-label="google+" class="md-raised md-warn" style="width: 100%;" data-ng-click="login.auth('google')">
 		    	<i class="fa fa-google-plus fa-3x"></i>
 		    </md-button>
 		</section>

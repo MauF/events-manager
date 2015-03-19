@@ -1,0 +1,13 @@
+<div data-ng-controller="EventDetailsController as eventDetails">
+    <md-toolbar layout="row" class="md-theme-light">
+        <h1 layout-align="start center" class="md-toolbar-tools">
+            <span>{{eventDetails.title}}</span>
+        </h1>
+    </md-toolbar>
+    <md-content class="md-whiteframe-z1 md-padding" style="height: 100%">
+        <label data-ng-hide="eventDetails.event" class="md-padding" layout layout-sm="column" flex layout-align="center">
+            <span layout layout-align="center" flex >Loading...</span>
+        </label>
+        <event data-ng-show="eventDetails.event" event-obj="eventDetails.event" show-btns="true"></event>
+    </md-content>
+</div>
