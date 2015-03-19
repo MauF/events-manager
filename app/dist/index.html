@@ -24,13 +24,13 @@
                 </md-tooltip>
               </md-button>
               &nbsp;
-              <md-button class="md-fab md-primary md-hue-2" aria-label="create new event" data-ng-show="app.isLocation('event-list')" data-ng-click="app.goTo('event/new')">
+              <md-button class="md-fab md-primary md-hue-2" aria-label="create new event" data-ng-show="!app.isLocation('event/new')" data-ng-click="app.goTo('event/new')">
                 <i class="fa fa-calendar fa-2x"></i>
                 <md-tooltip>
                     create new event
                 </md-tooltip>
               </md-button>
-              <md-button class="md-fab md-primary md-hue-2" aria-label="show event-list" data-ng-show="app.isLocation('event/new')" data-ng-click="app.goTo('event-list')">
+              <md-button class="md-fab md-primary md-hue-2" aria-label="show event-list" data-ng-show="!app.isLocation('event-list')" data-ng-click="app.goTo('event-list')">
                 <i class="fa fa-list-alt fa-2x"></i>
                 <md-tooltip>
                     show event-list
