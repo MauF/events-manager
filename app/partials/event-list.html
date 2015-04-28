@@ -19,6 +19,7 @@
             <a layout layout-align="center" flex href="#/event/new">&nbsp;Click here to create a event...</a>
         </label>
         <md-list data-ng-show="eventList.events.length > 0">
+            <!-- <event data-ng-repeat="event in eventList.events | removeOldEvent | filter: eventList.filter" event-obj="event" show-btns="false"></event> -->
             <event data-ng-repeat="event in eventList.events | removeOldEvent | filter: eventList.filter" event-obj="event" show-btns="false"></event>
         </md-list>
     </md-content>

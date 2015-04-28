@@ -293,6 +293,7 @@ controller('LoginController', ['login-util', '$log', '$mdSidenav', '$mdBottomShe
 
     this.auth = function(authProvider) {
         Auth.$authWithOAuthPopup(authProvider).then(function(authData) {
+            // alert(loginUtil.getRedirect());
             if (loginUtil.getRedirect()) {
                 $location.path(loginUtil.getRedirect());
             } else {
